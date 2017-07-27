@@ -15,11 +15,13 @@ const tg = new Telegram.Telegram('433728794:AAHYqC2qaD88yIW5eekKbMYBVfisdRK2Hmo'
 });
 
 const RemindController = require('./controllers/remind');
+const StartController = require('./controllers/start');
 const OtherwiseController = require('./controllers/otherwise');
 
 const remCtrl = new RemindController();
 
-tg.router.when(new Telegram.TextCommand('/remind', 'addReminderCommand'), remCtrl)
+tg.router.when(new Telegram.TextCommand('/start', 'startCommand'), new StartController())
+    .when(new Telegram.TextCommand('/remind', 'addReminderCommand'), remCtrl)
 	.when(new Telegram.TextCommand('/list', 'listCommand'), remCtrl)
 	.when(new Telegram.TextCommand('/del', 'delReminderCommand'), remCtrl)
 	.otherwise(new OtherwiseController);

@@ -81,7 +81,7 @@ class RemindController extends TelegramBaseController {
 
         $.getUserSession('reminders')
             .then(reminders => {
-                if (index-1 >= reminders.length || reminders == undefined) {
+                if (reminders == undefined || reminders == null || index-1 >= reminders.length) {
                     return $.sendMessage('Sorry, you didn\'t pass a valid index.');
                 }
                 let deleted = reminders[index-1];
