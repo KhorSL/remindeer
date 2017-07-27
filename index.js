@@ -1,8 +1,8 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot');
-const tg = new Telegram.Telegram('433728794:AAHYqC2qaD88yIW5eekKbMYBVfisdRK2Hmo', {
-	workers: 1, //default uses as many as the CPU calls
+const tg = new Telegram.Telegram('API_KEY', {
+	workers: 1,
 	webAdmin: {
         port: process.env.PORT || 7777,
         host: process.env.HOST || 'localhost'
