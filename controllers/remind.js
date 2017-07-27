@@ -9,6 +9,10 @@ class RemindController extends TelegramBaseController {
     	let reminderWithDateTime = $.message.text.split(' ').slice(1).join(' ');
         let reminderMsg = reminderWithDateTime.split(' -@', 1);
         let dateTime = reminderWithDateTime.split('-@ ').slice(1);
+
+        if(!reminderWithDateTime) {
+            return $.sendMessage('Sorry, please tell me something I can remind you about.');
+        }
         
         var shorthand = dateTime[0].replace(/,/g, '').split(' ').slice(0,1);
         var time = dateTime[0].replace(/,/g, '').split(' ').slice(1,2);
@@ -22,10 +26,6 @@ class RemindController extends TelegramBaseController {
             if(!moment(dateTime).isValid()) {
                 return $.sendMessage('Sorry, your date/time format is invalid.');
             }      
-        }
-
-        if(!reminderWithDateTime) {
-            return $.sendMessage('Sorry, please tell me something I can remind you about.');
         }
 
         var reminder = {msg: reminderMsg, dateTime: dateTime};
