@@ -9,21 +9,19 @@ class RemindController extends TelegramBaseController {
     	let reminderWithDateTime = $.message.text.split(' ').slice(1).join(' ');
         let reminderMsg = reminderWithDateTime.split(' -@', 1);
         let dateTime = reminderWithDateTime.split('-@ ').slice(1);
-        dateTime = new Date(moment(dateTime[0], 'DD/MM/YYYY HHmm'));
-
-        if(!moment(dateTime).isValid()) {
-            dateTime = reminderWithDateTime.split('-@ ').slice(1);
-            var shorthand = dateTime[0].replace(/,/g, '').split(' ').slice(0,1);
-            var time = dateTime[0].replace(/,/g, '').split(' ').slice(1,2);
-
-            if(shorthand == 'today' || shorthand == 'Today' || shorthand == 'later') {
-                dateTime = new Date(new moment().set({'hour': time[0].substring(0,2), 'minute': time[0].substring(2)}));
-            } else if(shorthand == 'tmr' || shorthand == 'tomorrow' || shorthand == 'tmrw') {
-                dateTime = new Date(new moment().set({'hour': time[0].substring(0,2), 'minute': time[0].substring(2)}));
-                dateTime = moment(dateTime).add(1, 'days');
-            } else {
+        
+        var shorthand = dateTime[0].replace(/,/g, '').split(' ').slice(0,1);
+        var time = dateTime[0].replace(/,/g, '').split(' ').slice(1,2);
+        if(shorthand == 'today' || shorthand == 'Today' || shorthand == 'later' && isNaN(time)) {
+            dateTime = new Date(new moment().set({'hour': time[0].substring(0,2), 'minute': time[0].substring(2)}));
+        } else if(shorthand == 'tmr' || shorthand == 'tomorrow' || shorthand == 'tmrw' && isNaN(time)) {
+            dateTime = new Date(new moment().set({'hour': time[0].substring(0,2), 'minute': time[0].substring(2)}));
+            dateTime = moment(dateTime).add(1, 'days');
+        } else {
+            dateTime = new Date(moment(dateTime[0], 'DD/MM/YYYY HHmm'));
+            if(!moment(dateTime).isValid()) {
                 return $.sendMessage('Sorry, your date/time format is invalid.');
-            }
+            }      
         }
 
         if(!reminderWithDateTime) {

@@ -6,6 +6,11 @@ const tg = new Telegram.Telegram('433728794:AAHYqC2qaD88yIW5eekKbMYBVfisdRK2Hmo'
 	webAdmin: {
         port: process.env.PORT || 7777,
         host: process.env.HOST || 'localhost'
+    },
+    webHook: {
+    	url: 'https://remindeer.herokuapp.com/',
+        port: process.env.PORT || 7777,
+        host: process.env.HOST || 'localhost'
     }
 });
 
