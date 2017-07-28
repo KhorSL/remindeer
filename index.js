@@ -1,6 +1,15 @@
 'use strict';
 
 const Telegram = require('telegram-node-bot');
+
+/** For Memory Storage in event app crash **\/
+const PersistentMemoryStorage = require('./adapters/PersistentMemoryStorage');
+const storage = new PersistentMemoryStorage(
+        `${__dirname}/data/userStorage.json`,
+        `${__dirname}/data/chatStorage.json`
+    );
+/** **/
+
 const tg = new Telegram.Telegram('API_KEY', {
 	workers: 1,
 	webAdmin: {
@@ -12,6 +21,7 @@ const tg = new Telegram.Telegram('API_KEY', {
         port: process.env.PORT || 7777,
         host: process.env.HOST || 'localhost'
     }
+/**  ,storage: storage **/
 });
 
 const RemindController = require('./controllers/remind');
@@ -25,3 +35,13 @@ tg.router.when(new Telegram.TextCommand('/start', 'startCommand'), new StartCont
 	.when(new Telegram.TextCommand('/list', 'listCommand'), remCtrl)
 	.when(new Telegram.TextCommand('/del', 'delReminderCommand'), remCtrl)
 	.otherwise(new OtherwiseController);
+
+/** For Memory Storage in event app crash **\/
+function exitHandler(exitCode) {
+    storage.flush();
+    process.exit(exitCode);
+}
+
+process.on('SIGINT', exitHandler.bind(null, 0));
+process.on('uncaughtException', exitHandler.bind(null, 1));
+/** **/

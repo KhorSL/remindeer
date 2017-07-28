@@ -52,7 +52,7 @@ class RemindController extends TelegramBaseController {
                 var todayReminders = this._findToday(reminders);
                 $.sendMessage(todayReminders, {parse_mode: 'Markdown'});
             });
-        } else if(action == 'tmr' || action == 'tommorrow' || action == 'tmrw') {
+        } else if(action == 'tmr' || action == 'tomorrow' || action == 'tmrw') {
             $.getUserSession('reminders').then(reminders => {
                 var tmrReminders = this._findTmr(reminders);
                 $.sendMessage(tmrReminders, {parse_mode: 'Markdown'});
